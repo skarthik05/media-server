@@ -1,6 +1,6 @@
 import express from "express";
-import { PORT } from "./src/config/index.js";
-import mediaRoutes from "./src/routes/mediaRoutes.js";
+import { PORT } from "./config/index.js";
+import mediaRoutes from "./routes/mediaRoutes.js";
 
 const app = express();
 

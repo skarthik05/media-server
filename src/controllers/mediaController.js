@@ -3,6 +3,7 @@ import path from "path";
 import mime from "mime";
 import { getChunkSize } from "../utils/fileUtils.js";
 import { MEDIA_DIR } from "../config/index.js";
+import { handleStreamErrors } from "../utils/streamUtils.js";
 
 export const streamMedia = async (req, res) => {
   const fileName = req.params.filename;
@@ -28,18 +29,14 @@ export const streamMedia = async (req, res) => {
     };
 
     res.writeHead(206, headers);
+
     const stream = createReadStream(filePath, { start, end });
 
-    stream.on("open", () => {
-      stream.pipe(res);
-    });
+    handleStreamErrors(stream, res);
 
-    stream.on("error", (streamErr) => {
-      console.error(streamErr);
-      res.status(500).send(streamErr);
-    });
+    stream.pipe(res);
   } catch (err) {
-    console.error(err);
+    console.error("File stat error:", err);
     res.status(404).send("File not found");
   }
 };
