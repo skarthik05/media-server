@@ -1,7 +1,10 @@
-const express = require("express");
+import express from "express";
+import { PORT } from "./config/index.js";
+import mediaRoutes from "./routes/mediaRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT;
+
+app.use("/", mediaRoutes);
 
 app.get("/", (req, res) => {
   res.send("Media Server is running.");
